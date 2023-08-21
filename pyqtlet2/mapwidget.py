@@ -1,8 +1,10 @@
 import os
 
+os.environ["QT_API"] = "pyside6"
 from qtpy.QtCore import QEventLoop, Qt, QUrl
 from qtpy.QtWebChannel import QWebChannel
 from qtpy.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+from qtpy.QtWebEngineCore import QWebEngineSettings
 
 
 class MapWidget(QWebEngineView):
@@ -26,6 +28,9 @@ class MapWidget(QWebEngineView):
         else:
             self.base_path = alternative_base_path
         self._page = QWebEnginePage()
+        self._page.settings().setAttribute(
+            QWebEngineSettings.LocalContentCanAccessRemoteUrls, True
+        )
         self.setPage(self._page)
         self._channel = QWebChannel()
         self._page.setWebChannel(self._channel)
